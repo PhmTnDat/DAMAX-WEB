@@ -3,481 +3,492 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phạm Tấn Đạt | AI Creative Studio</title>
+    <title>Phạm Tấn Đạt | Creative Studio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         /* --- CẤU HÌNH MÀU SẮC (THEME) --- */
         :root {
-            --bg-body: #030005; 
-            --primary: #ededed; 
-            --accent: #ff2a2a;       
-            --glass-bg: rgba(20, 5, 5, 0.6); 
-            --glass-border: 1px solid rgba(255, 100, 100, 0.15); 
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.6); 
-            --glass-blur: blur(20px); 
+            /* --- MẶC ĐỊNH LÀ GIAO DIỆN TỐI (DARK) - NHƯNG SẼ BỊ OVERRIDE BỞI LIGHT MODE --- */
+            --bg-body: #05000a; 
+            --primary: #e0e0e0; 
+            --accent: #ff3333;       
+            --glass-bg: rgba(40, 10, 10, 0.45); 
+            --glass-border: 1px solid rgba(255, 100, 100, 0.2); 
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5); 
+            --glass-blur: blur(16px); 
             --input-bg: rgba(30, 10, 10, 0.6);
             --input-text: #ffffff;
-            --tech-font: 'Space Grotesk', sans-serif;
-            --body-font: 'Quicksand', sans-serif;
-            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            --input-placeholder: rgba(255, 255, 255, 0.5);
+            --radius-box: 24px;
+            --radius-btn: 50px;
+            --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
+        /* --- LIGHT MODE (CHẾ ĐỘ SÁNG - MẶC ĐỊNH CHO WEBSITE NÀY) --- */
         body.light-mode {
-            --bg-body: #f4f4f0;      
-            --primary: #1a1a1a;      
-            --accent: #d00000;      
-            --glass-bg: rgba(255, 255, 255, 0.75); 
-            --glass-border: 1px solid rgba(0, 0, 0, 0.05); 
-            --glass-shadow: 0 8px 32px 0 rgba(100, 100, 100, 0.1); 
-            --input-bg: rgba(255, 255, 255, 0.9);
+            --bg-body: #fdfbf7;      
+            --primary: #333333;      
+            --accent: #da0b0b;      
+            
+            /* Glassmorphism Light */
+            --glass-bg: rgba(255, 255, 255, 0.65); 
+            --glass-border: 1px solid rgba(255, 255, 255, 0.9); 
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1); 
+            
+            --input-bg: rgba(255, 255, 255, 0.8);
             --input-text: #333333;
+            --input-placeholder: #888888;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: var(--body-font);
-            line-height: 1.6;
+            font-family: 'Quicksand', sans-serif;
+            line-height: 1.7;
             color: var(--primary);
             background-color: var(--bg-body);
             overflow-x: hidden;
             font-size: 16px;
+            position: relative;
             transition: background-color 0.5s ease, color 0.5s ease;
-        }
-
-        h1, h2, h3, h4, .logo, .nav-link, .filter-btn {
-            font-family: var(--tech-font);
         }
 
         /* --- BACKGROUND PIXEL SPACE --- */
         #pixel-space-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
             image-rendering: pixelated; 
+            transition: background 0.5s ease;
         }
 
-        /* --- UTILITIES --- */
+        /* --- CLASS TIỆN ÍCH --- */
         .glass-panel {
             background: var(--glass-bg);
             backdrop-filter: var(--glass-blur);
             -webkit-backdrop-filter: var(--glass-blur);
             border: var(--glass-border);
             box-shadow: var(--glass-shadow);
-            border-radius: 20px;
+            border-radius: var(--radius-box);
+            transition: background 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
         }
-        
-        .ai-decoration {
-            font-family: 'Courier New', monospace;
-            font-size: 0.7rem;
-            opacity: 0.5;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { width: 100%; display: block; border-radius: var(--radius-box); }
 
         /* --- HEADER --- */
         header {
-            position: fixed; width: 100%; top: 0; left: 0;
-            z-index: 1000; padding: 20px 50px;
-            display: flex; justify-content: space-between; align-items: center;
-            background: rgba(0,0,0,0.01); /* Trong suốt hoàn toàn lúc đầu */
-            transition: var(--transition);
-        }
-        
-        header.scrolled {
             background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border-bottom: var(--glass-border);
-            padding: 15px 50px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: var(--glass-border);
+            padding: 0.8rem 2rem;
+            position: fixed; width: 90%; top: 20px; left: 50%; transform: translateX(-50%);
+            z-index: 1000;
+            display: flex; justify-content: space-between; align-items: center;
+            border-radius: 50px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s ease;
         }
 
-        .logo { font-size: 1.5rem; font-weight: 700; color: var(--primary); letter-spacing: -1px; }
+        .logo { font-size: 1.4rem; font-weight: 700; padding-left: 10px; color: var(--primary); }
         .logo span { color: var(--accent); }
 
-        nav ul { display: flex; gap: 3rem; align-items: center; list-style: none;}
-        nav a { 
-            font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;
-            position: relative; transition: var(--transition); color: var(--primary);
-        }
-        nav a::after {
-            content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 1px;
-            background: var(--accent); transition: var(--transition);
-        }
-        nav a:hover::after { width: 100%; }
+        nav ul { display: flex; gap: 2rem; padding-right: 10px; align-items: center; }
+        nav a { font-weight: 600; font-size: 0.95rem; transition: var(--transition); color: var(--primary); opacity: 0.8; }
+        nav a:hover { color: var(--accent); opacity: 1; text-shadow: 0 0 10px rgba(255, 50, 50, 0.3); }
 
-        .theme-toggle-btn { cursor: pointer; font-size: 1.2rem; color: var(--primary); transition: var(--transition); }
-        .theme-toggle-btn:hover { color: var(--accent); transform: rotate(180deg); }
+        .theme-toggle-btn {
+            cursor: pointer; font-size: 1.2rem; padding: 8px 12px; border-radius: 50%;
+            background: rgba(128, 128, 128, 0.2); color: var(--accent); transition: var(--transition);
+        }
+        .theme-toggle-btn:hover { background: var(--accent); color: white; transform: rotate(180deg); }
+        .menu-toggle { display: none; font-size: 1.5rem; cursor: pointer; padding-right: 10px; color: var(--primary);}
 
-        /* --- HERO SECTION (BIG & BOLD) --- */
+        /* --- HERO --- */
         .hero {
-            min-height: 90vh; display: flex; flex-direction: column; justify-content: center;
-            padding: 0 50px; position: relative;
-            padding-top: 80px;
+            min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 0 20px;
         }
-        
-        .hero-label {
-            display: inline-block; padding: 5px 15px; border: 1px solid var(--accent);
-            color: var(--accent); border-radius: 50px; font-size: 0.8rem; font-weight: 600;
-            margin-bottom: 20px; width: fit-content;
-            background: rgba(255, 42, 42, 0.1);
-        }
-
         .hero h1 {
-            font-size: 6vw; /* Chữ cực lớn */
-            line-height: 1; margin-bottom: 1.5rem; font-weight: 700;
-            letter-spacing: -3px; text-transform: uppercase;
+            font-size: 3.5rem; margin-bottom: 1rem; line-height: 1.2; font-weight: 700;
+            animation: fadeIn Up 1s ease; color: var(--primary);
+            text-shadow: 3px 3px 0px var(--accent);
+        }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin-bottom: 2.5rem; font-weight: 500; animation: fadeIn 1.5s ease; color: var(--primary); opacity: 0.9; }
+        
+        .btn {
+            padding: 15px 45px; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px);
+            border: 2px solid var(--accent); color: var(--accent); border-radius: var(--radius-btn);
+            font-size: 1rem; font-weight: 700; transition: var(--transition); display: inline-block; cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 50, 50, 0.2);
+        }
+        .btn:hover { background: var(--accent); color: white; transform: translateY(-5px); box-shadow: 0 15px 30px rgba(255, 50, 50, 0.4); }
+
+        .section { padding: 6rem 10%; }
+        .section-title { font-size: 2.2rem; text-align: center; margin-bottom: 3.5rem; font-weight: 700; position: relative; color: var(--primary); }
+        .section-title::after {
+            content: ''; width: 50px; height: 6px; background: var(--accent);
+            position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 0 15px var(--accent);
+        }
+
+        /* --- ABOUT (AUTO SLIDESHOW) --- */
+        .about-content { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding: 3rem; }
+        
+        /* Container ảnh dạng Grid để các ảnh chồng lên nhau */
+        .about-image { 
+            display: grid; 
+            grid-template-areas: "stack";
+            border-radius: 30px; 
+            overflow: hidden; 
+            border: 4px solid var(--glass-border); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            aspect-ratio: 1 / 1; /* Giữ khung hình vuông hoặc theo tỷ lệ ảnh */
+        }
+
+        .about-image img { 
+            grid-area: stack; /* Tất cả ảnh nằm cùng 1 vị trí */
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            border-radius: 26px; /* Nhỏ hơn parent border radius chút */
+            opacity: 0; /* Mặc định ẩn */
+            transition: opacity 1s ease-in-out; /* Hiệu ứng mờ dần */
+        }
+
+        .about-image img.active {
+            opacity: 1; /* Ảnh đang active sẽ hiện */
+        }
+
+        /* --- PORTFOLIO & LIQUID GLASS EFFECT --- */
+        .category-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+        
+        .category-card { 
+            padding: 3rem 1.5rem; text-align: center; cursor: pointer; transition: var(--transition); 
+            position: relative; /* Để căn vị trí cho popup */
+            /* Không dùng overflow hidden để popup bay ra ngoài */
         }
         
-        .hero h1 span.gradient-text {
-            background: linear-gradient(90deg, var(--accent), #ff8888);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 1.3rem; max-width: 600px; margin-bottom: 3rem; opacity: 0.8;
-            font-weight: 300;
-        }
-
-        .hero-stats {
-            display: flex; gap: 4rem; margin-top: 2rem;
-            border-top: 1px solid var(--glass-border); padding-top: 2rem;
-        }
-        .stat-item h3 { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
-        .stat-item p { font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
-
-        /* --- INFINITE MARQUEE (SHOWCASE NHANH) --- */
-        .marquee-container {
-            width: 100%; overflow: hidden; background: var(--accent); color: #fff;
-            padding: 15px 0; transform: rotate(-1deg) scale(1.02); margin-bottom: 4rem;
-        }
-        .marquee-content {
-            display: flex; gap: 3rem; animation: scrollLeft 20s linear infinite; white-space: nowrap;
-        }
-        .marquee-content span {
-            font-family: var(--tech-font); font-weight: 700; font-size: 1.2rem; text-transform: uppercase;
-            display: flex; align-items: center; gap: 10px;
-        }
-        @keyframes scrollLeft { from { transform: translateX(0); } to { transform: translateX(-100%); } }
-
-        /* --- PORTFOLIO (MASONRY GRID - TRỌNG TÂM) --- */
-        .section { padding: 4rem 50px; }
-        .section-header { 
-            display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem;
-            flex-wrap: wrap; gap: 20px;
-        }
-        .section-title { font-size: 3rem; font-weight: 700; line-height: 1; letter-spacing: -1px;}
+        .category-card:hover { transform: translateY(-10px); background: rgba(255, 50, 50, 0.05); border-color: var(--accent); }
         
-        /* Filter Bar */
-        .filter-bar { display: flex; gap: 10px; flex-wrap: wrap; }
-        .filter-btn {
-            padding: 8px 20px; border-radius: 50px; border: 1px solid var(--glass-border);
-            background: transparent; color: var(--primary); cursor: pointer;
-            transition: var(--transition); font-size: 0.9rem;
+        .category-card i {
+            font-size: 3rem; color: var(--accent); margin-bottom: 1.5rem; background: rgba(128, 128, 128, 0.1);
+            width: 80px; height: 80px; line-height: 80px; border-radius: 50%; transition: var(--transition);
         }
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary); color: var(--bg-body); border-color: var(--primary);
+        .category-card:hover i { background: var(--accent); color: white; transform: rotate(10deg); }
+
+        /* LIQUID POPUP CSS */
+        .liquid-popup {
+            position: absolute;
+            top: -10%; /* Bắt đầu ở vị trí này */
+            left: 50%;
+            transform: translate(-50%, 20px) scale(0.8);
+            width: 220px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.3); /* Nền kính */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.8);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            opacity: 0;
+            visibility: hidden;
+            z-index: 10;
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Hiệu ứng nảy */
+            
+            /* Tạo hình dáng Liquid (Giọt nước biến dạng) */
+            border-radius: 30px; 
+            pointer-events: none; /* Không che chuột */
         }
 
-        /* Masonry Grid Setup */
-        .masonry-grid {
-            column-count: 3; /* Chia thành 3 cột */
-            column-gap: 20px;
-        }
-        
-        .grid-item {
-            display: inline-block; width: 100%; margin-bottom: 20px;
-            position: relative; border-radius: 15px; overflow: hidden;
-            cursor: pointer; break-inside: avoid;
-            border: 1px solid rgba(255,255,255,0.1);
+        /* Khi hover vào card thì hiện popup */
+        .category-card:hover .liquid-popup {
+            opacity: 1;
+            visibility: visible;
+            top: -160px; /* Bay lên trên */
+            transform: translate(-50%, 0) scale(1);
         }
 
-        .grid-item img {
-            width: 100%; height: auto; display: block;
-            transition: transform 0.6s ease;
+        /* Grid thumbnail bên trong popup */
+        .popup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        .popup-item {
+            height: 60px;
+            background: #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .popup-item img {
+            width: 100%; height: 100%; object-fit: cover; border-radius: 10px;
         }
 
-        .grid-info {
-            position: absolute; bottom: 0; left: 0; width: 100%;
-            padding: 20px;
-            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
-            opacity: 0; transform: translateY(20px); transition: var(--transition);
-            color: white; /* Luôn màu trắng vì trên nền tối */
+        /* Mũi tên trỏ xuống của popup */
+        .liquid-popup::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(255,255,255,0.3) transparent transparent transparent;
+            backdrop-filter: blur(20px);
         }
 
-        .grid-item:hover img { transform: scale(1.05); }
-        .grid-item:hover .grid-info { opacity: 1; transform: translateY(0); }
-        
-        .grid-tag { 
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--accent); margin-bottom: 5px; display: block; 
-        }
-        .grid-title { font-size: 1.2rem; font-weight: 600; font-family: var(--tech-font); }
 
-        /* --- ABOUT SECTION (Redesigned) --- */
-        .about-layout {
-            display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 4rem; align-items: center;
+        /* Gallery View */
+        .gallery-view { display: none; padding: 2rem; animation: fadeIn 0.6s ease; }
+        .gallery-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 2px dashed var(--accent); }
+        .back-btn { background: rgba(128, 128, 128, 0.1); border: 1px solid var(--accent); color: var(--accent); padding: 10px 25px; border-radius: var(--radius-btn); cursor: pointer; font-weight: 700; transition: var(--transition); }
+        .back-btn:hover { background: var(--accent); color: white; }
+
+        .portfolio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .portfolio-item { position: relative; overflow: hidden; border-radius: 20px; height: 250px; cursor: pointer; border: 4px solid var(--glass-border); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .portfolio-item:hover img { transform: scale(1.1); }
+        .overlay {
+            position: absolute; inset: 0; background: rgba(255, 255, 255, 0.9);
+            display: flex; justify-content: center; align-items: center; opacity: 0; transition: var(--transition); backdrop-filter: blur(5px);
         }
-        .about-text h2 { font-size: 2.5rem; margin-bottom: 1.5rem; }
-        .tech-box {
-            padding: 2rem; border: 1px solid var(--accent); border-radius: 20px;
-            position: relative; margin-top: 2rem;
-        }
-        .tech-box::before {
-            content: 'AI_SYSTEM_OPTIMIZED'; position: absolute; top: -10px; left: 20px;
-            background: var(--bg-body); padding: 0 10px; color: var(--accent); font-size: 0.8rem;
-        }
+        body:not(.light-mode) .overlay { background: rgba(20, 0, 0, 0.85); }
+        .overlay h4 { color: var(--accent); font-weight: 700; font-size: 1.2rem; }
+        .portfolio-item:hover .overlay { opacity: 1; }
 
         /* --- CONTACT --- */
-        .contact-wrapper {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+        .contact-container { max-width: 600px; margin: 0 auto; padding: 3rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.8rem; font-weight: 700; padding-left: 10px; color: var(--primary); }
+        .form-group input, .form-group textarea {
+            width: 100%; padding: 15px 20px; border: 1px solid var(--glass-border); border-radius: 20px;
+            font-family: inherit; background: var(--input-bg); transition: var(--transition); color: var(--input-text);
         }
-        .contact-info h2 { font-size: 4rem; line-height: 1; margin-bottom: 2rem; }
-        .contact-form input, .contact-form textarea {
-            width: 100%; padding: 20px; background: transparent; border: none;
-            border-bottom: 1px solid var(--primary); margin-bottom: 20px;
-            color: var(--primary); font-family: var(--tech-font); font-size: 1.1rem;
-            transition: var(--transition);
-        }
-        .contact-form input:focus, .contact-form textarea:focus {
-            outline: none; border-bottom-color: var(--accent); padding-left: 10px;
-        }
-        .submit-btn {
-            padding: 15px 40px; background: var(--accent); color: white; border: none;
-            border-radius: 5px; font-weight: 700; cursor: pointer; font-size: 1rem;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
+        .form-group input::placeholder, .form-group textarea::placeholder { color: var(--input-placeholder); }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 15px rgba(255, 50, 50, 0.3); }
+        .submit-btn { width: 100%; padding: 15px; margin-top: 10px; }
 
         /* --- FOOTER --- */
-        footer {
-            padding: 50px; text-align: center; border-top: 1px solid var(--glass-border);
-            font-size: 0.9rem; opacity: 0.6;
-        }
+        footer { background: var(--glass-bg); backdrop-filter: blur(10px); padding: 4rem 10%; text-align: center; margin-top: 3rem; border-top: 1px solid var(--glass-border); color: var(--primary); }
+        .social-icons a { font-size: 1.5rem; margin: 0 10px; color: var(--accent); background: rgba(128, 128, 128, 0.1); width: 50px; height: 50px; line-height: 50px; border-radius: 50%; display: inline-block; transition: var(--transition); }
+        .social-icons a:hover { background: var(--accent); color: white; transform: translateY(-5px); box-shadow: 0 0 15px var(--accent); }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 768px) {
-            header { padding: 15px 20px; }
-            .hero h1 { font-size: 14vw; }
-            .hero-stats { flex-direction: column; gap: 1.5rem; }
-            .masonry-grid { column-count: 1; }
-            .about-layout, .contact-wrapper { grid-template-columns: 1fr; }
-            nav ul { display: none; } /* Mobile menu logic kept simple for now */
-            .section { padding: 3rem 20px; }
+            header { width: 95%; padding: 0.8rem 1.5rem; }
+            .hero h1 { font-size: 2.2rem; }
+            .about-content { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); }
+            .category-card:hover .liquid-popup { display: none; /* Tắt popup trên mobile cho đỡ vướng */ }
+            nav ul {
+                display: none; flex-direction: column; position: absolute; top: 70px; right: 0;
+                background: var(--glass-bg); backdrop-filter: blur(20px); width: 100%; text-align: center;
+                padding: 20px 0; border-radius: 20px; border: 1px solid var(--glass-border);
+            }
+            nav ul.active { display: flex; }
+            .menu-toggle { display: block; }
+            .section { padding: 4rem 5%; }
         }
     </style>
 </head>
-<body class="light-mode">
-    <canvas id="pixel-space-bg"></canvas>
+<body class="light-mode"> <canvas id="pixel-space-bg"></canvas>
 
-    <header id="main-header">
-        <div class="logo">PD<span>.</span> <span style="font-size: 0.5em; opacity: 0.5; font-weight:300;">// STUDIO</span></div>
+    <header>
+        <div class="logo">Phạm Tấn Đạt<span>.</span></div>
+        <div class="menu-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
         <nav>
-            <ul>
-                <li><a href="#work">Dự Án</a></li>
-                <li><a href="#about">Hồ Sơ</a></li>
+            <ul id="nav-list">
+                <li><a href="#home">Trang Chủ</a></li>
+                <li><a href="#about">Giới Thiệu</a></li>
+                <li><a href="#portfolio">Dự Án</a></li>
                 <li><a href="#contact">Liên Hệ</a></li>
-                <li onclick="toggleTheme()" class="theme-toggle-btn"><i class="fas fa-moon" id="theme-icon"></i></li>
+                <li onclick="toggleTheme()" class="theme-toggle-btn" title="Chuyển chế độ Sáng/Tối">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </li>
             </ul>
         </nav>
     </header>
 
-    <section class="hero">
-        <div class="hero-label"><i class="fas fa-robot"></i> AI-Powered Design</div>
-        <h1>
-            Biến Ý Tưởng<br>
-            Thành <span class="gradient-text">Hiện Thực.</span>
-        </h1>
-        <p>Phạm Tấn Đạt — Graphic Designer kết hợp tư duy sáng tạo nguyên bản và công nghệ AI để tạo ra các giải pháp thương hiệu đột phá.</p>
-        
-        <div class="hero-stats">
-            <div class="stat-item">
-                <h3>4+</h3>
-                <p>Năm Kinh Nghiệm</p>
-            </div>
-            <div class="stat-item">
-                <h3>50+</h3>
-                <p>Dự Án Hoàn Thành</p>
-            </div>
-            <div class="stat-item">
-                <h3>100%</h3>
-                <p>Sự Hài Lòng</p>
-            </div>
-        </div>
+    <section id="home" class="hero">
+        <h1>Freelance Designer AI</h1>
+        <p>Đơn giản hoá ý tưởng bằng AI.</p>
+        <a href="#portfolio" class="btn">Khám Phá Ngay <i class="fas fa-water" style="margin-left:5px; font-size:0.8em;"></i></a>
     </section>
 
-    <div class="marquee-container">
-        <div class="marquee-content">
-            <span>BRANDING <i class="fas fa-star"></i></span>
-            <span>PACKAGING DESIGN <i class="fas fa-star"></i></span>
-            <span>LOGO IDENTITY <i class="fas fa-star"></i></span>
-            <span>VISUAL ART <i class="fas fa-star"></i></span>
-            <span>MARKETING ASSETS <i class="fas fa-star"></i></span>
-            <span>BRANDING <i class="fas fa-star"></i></span>
-            <span>PACKAGING DESIGN <i class="fas fa-star"></i></span>
-            <span>LOGO IDENTITY <i class="fas fa-star"></i></span>
-        </div>
-    </div>
-
-    <section id="work" class="section">
-        <div class="section-header">
-            <div>
-                <div class="ai-decoration">[DB_SELECTED_WORKS_2026]</div>
-                <h2 class="section-title">Dự Án Tiêu Biểu</h2>
+    <section id="about" class="section">
+        <h2 class="section-title">Về Tôi</h2>
+        <div class="about-content glass-panel">
+            <div class="about-image" id="about-slideshow">
+                <img src="ảnh/damaxz.png" class="active" alt="Chân dung 1">
+                <img src="ảnh/damaxz2.png" alt="Chân dung 2"> <img src="ảnh/damaxz3.png" alt="Chân dung 3">
+                <img src="ảnh/damaxz4.png" alt="Chân dung 4">
             </div>
-            <div class="filter-bar">
-                <button class="filter-btn active" onclick="filterSelection('all')">Tất cả</button>
-                <button class="filter-btn" onclick="filterSelection('brand')">Branding</button>
-                <button class="filter-btn" onclick="filterSelection('packaging')">Bao bì</button>
-                <button class="filter-btn" onclick="filterSelection('logo')">Logo</button>
-            </div>
-        </div>
-
-        <div class="masonry-grid" id="portfolio-grid">
-            <div class="grid-item brand">
-                <img src="ảnh/1.jpg" alt="Project 1">
-                <div class="grid-info">
-                    <span class="grid-tag">Branding</span>
-                    <h3 class="grid-title">JUTU Coffee Identity</h3>
-                </div>
-            </div>
-             <div class="grid-item packaging">
-                <img src="ảnh/5.jpg" alt="Project 2"> <div class="grid-info">
-                    <span class="grid-tag">Packaging</span>
-                    <h3 class="grid-title">Nam Oil Bottle</h3>
-                </div>
-            </div>
-            <div class="grid-item logo">
-                <img src="ảnh/9.jpg" alt="Project 3">
-                <div class="grid-info">
-                    <span class="grid-tag">Logo Design</span>
-                    <h3 class="grid-title">Tech Corp Symbol</h3>
-                </div>
-            </div>
-            <div class="grid-item brand">
-                <img src="ảnh/2.jpg" alt="Project 4">
-                <div class="grid-info">
-                    <span class="grid-tag">Branding</span>
-                    <h3 class="grid-title">Street Racing Event</h3>
-                </div>
-            </div>
-            <div class="grid-item packaging">
-                <img src="ảnh/6.jpg" alt="Project 5">
-                <div class="grid-info">
-                    <span class="grid-tag">Packaging</span>
-                    <h3 class="grid-title">Snack Box Tet Edition</h3>
-                </div>
-            </div>
-             <div class="grid-item logo">
-                <img src="ảnh/3.jpg" alt="Project 6">
-                <div class="grid-info">
-                    <span class="grid-tag">Logo</span>
-                    <h3 class="grid-title">Minimalist Mark</h3>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="about" class="section glass-panel" style="margin: 0 50px;">
-        <div class="about-layout">
+            
             <div class="about-text">
-                <div class="ai-decoration">// USER_PROFILE: DAMAXZ</div>
-                <h2>Phạm Tấn Đạt</h2>
-                <p>Tôi tin rằng một thiết kế tốt không chỉ cần đẹp, mà còn phải "thông minh". Tôi kết hợp tư duy thẩm mỹ cổ điển với sức mạnh của AI để tối ưu hóa quy trình và tạo ra những sản phẩm có chiều sâu.</p>
-                <div class="tech-box">
-                    <p style="font-family: monospace; font-size: 0.9rem;">
-                        > Skillset loading...<br>
-                        [####################] 100% Photoshop<br>
-                        [##################--] 90% Illustrator<br>
-                        [####################] 100% AI Promting<br>
-                        > Status: Ready to work
-                    </p>
-                </div>
-            </div>
-            <div class="about-img">
-                <img src="ảnh/damaxz.png" style="border-radius: 20px; width: 100%; box-shadow: -20px 20px 0 var(--accent);" alt="Portrait">
+                <h3>Phạm Tấn Đạt</h3>
+                <p>Tôi làm việc với tư duy đơn giản và rõ ràng. Ưu tiên chất lượng, tính ứng dụng và không ngừng hoàn thiện kỹ năng mỗi ngày.</p>
+                <br>
+                <p>Chào mừng bạn đến với thế giới sáng tạo nơi mọi thứ bắt đầu</p>
             </div>
         </div>
+    </section>
+
+    <section id="portfolio" class="section">
+        <h2 class="section-title">Góc Sáng Tạo</h2>
+        
+        <div id="category-container" class="category-container">
+            <div class="category-card glass-panel" onclick="openCategory('brand')">
+                <div class="liquid-popup">
+                    <div class="popup-grid">
+                        <div class="popup-item"><img src="ảnh/1.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/2.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/3.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/4.jpg" alt="preview"></div>
+                    </div>
+                </div>
+                <i class="fas fa-fingerprint"></i>
+                <h3>Brand Identity</h3>
+                <p>9 Dự Án</p>
+            </div>
+
+            <div class="category-card glass-panel" onclick="openCategory('packaging')">
+                <div class="liquid-popup">
+                    <div class="popup-grid">
+                        <div class="popup-item"><img src="ảnh/5.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/6.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/7.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/8.jpg" alt="preview"></div>
+                    </div>
+                </div>
+                <i class="fas fa-box-open"></i>
+                <h3>Packaging</h3>
+                <p>9 Dự Án</p>
+            </div>
+
+            <div class="category-card glass-panel" onclick="openCategory('logo')">
+                 <div class="liquid-popup">
+                    <div class="popup-grid">
+                        <div class="popup-item"><img src="ảnh/9.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/1.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/2.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/3.jpg" alt="preview"></div>
+                    </div>
+                </div>
+                <i class="fas fa-pen-nib"></i>
+                <h3>Logo Design</h3>
+                <p>9 Dự Án</p>
+            </div>
+
+            <div class="category-card glass-panel" onclick="openCategory('mockup')">
+                 <div class="liquid-popup">
+                    <div class="popup-grid">
+                        <div class="popup-item"><img src="ảnh/4.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/5.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/6.jpg" alt="preview"></div>
+                        <div class="popup-item"><img src="ảnh/7.jpg" alt="preview"></div>
+                    </div>
+                </div>
+                <i class="fas fa-layer-group"></i>
+                <h3>Mockup</h3>
+                <p>9 Dự Án</p>
+            </div>
+        </div>
+
+        <div id="gallery-view" class="gallery-view glass-panel">
+            <div class="gallery-header">
+                <h3 id="gallery-title">Tên Danh Mục</h3>
+                <button class="back-btn" onclick="closeCategory()"><i class="fas fa-arrow-left"></i> Quay lại</button>
+            </div>
+            <div id="portfolio-grid" class="portfolio-grid">
+            </div>
+        </div>
+
     </section>
 
     <section id="contact" class="section">
-        <div class="contact-wrapper">
-            <div class="contact-info">
-                <h2>Cùng Tạo Ra<br>Điều Khác Biệt.</h2>
-                <p>Bạn có ý tưởng? Tôi có công cụ và kỹ năng.</p>
-                <br>
-                <p><i class="fas fa-envelope"></i> example@email.com</p>
-                <p><i class="fas fa-phone"></i> +84 000 000 000</p>
-            </div>
-            <div class="contact-form">
-                <form action="https://formspree.io/f/xqeekyqy" method="POST">
-                    <input type="text" name="name" placeholder="Tên của bạn *" required>
-                    <input type="email" name="email" placeholder="Email liên hệ *" required>
-                    <textarea rows="4" name="message" placeholder="Nói cho tôi về dự án của bạn..."></textarea>
-                    <button type="submit" class="submit-btn">Gửi Tin Nhắn <i class="fas fa-arrow-right"></i></button>
-                </form>
-            </div>
+        <h2 class="section-title">Liên Hệ</h2>
+        <div class="contact-container glass-panel">
+            <form action="https://formspree.io/f/xqeekyqy" method="POST">
+                <div class="form-group">
+                    <label for="name">Họ Tên</label>
+                    <input type="text" id="name" name="name" placeholder="Tên của bạn..." required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Email..." required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Lời Nhắn</label>
+                    <textarea id="message" name="message" rows="4" placeholder="Bạn cần thiết kế gì..." required></textarea>
+                </div>
+                <button type="submit" class="btn submit-btn">Gửi Tin Nhắn</button>
+            </form>
         </div>
     </section>
 
     <footer>
-        <div class="ai-decoration" style="margin-bottom: 10px;">SYSTEM SHUTDOWN SEQUENCE INITIATED...</div>
-        <p>&copy; 2026 Phạm Tấn Đạt. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/tandatt.68/"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/damax.pdf/"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>Website Design by Phạm Tấn Đạt &copy; 2026</p>
     </footer>
 
     <script>
-        // --- 1. THEME LOGIC ---
-        let isLightMode = true;
+        // --- 1. LOGIC LIGHT/DARK MODE (MẶC ĐỊNH SÁNG) ---
+        let isLightMode = true; // Set mặc định là True
         const themeIcon = document.getElementById('theme-icon');
 
         function toggleTheme() {
             isLightMode = !isLightMode;
             document.body.classList.toggle('light-mode');
-            themeIcon.className = isLightMode ? 'fas fa-moon' : 'fas fa-sun';
-            // Gọi lại initStars để đổi màu sao nếu cần
-        }
-
-        // --- 2. HEADER SCROLL EFFECT ---
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('main-header');
-            if (window.scrollY > 50) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        });
-
-        // --- 3. FILTER LOGIC FOR MASONRY ---
-        function filterSelection(category) {
-            const items = document.getElementsByClassName('grid-item');
-            const btns = document.getElementsByClassName('filter-btn');
             
-            // Active button style
-            for (let btn of btns) {
-                btn.classList.remove('active');
-                if (btn.innerText.toLowerCase().includes(category === 'all' ? 'tất cả' : category)) {
-                    btn.classList.add('active');
-                }
+            if (isLightMode) {
+                themeIcon.classList.remove('fa-sun');
+                themeIcon.classList.add('fa-moon'); // Sáng thì hiện trăng để bấm qua tối
+            } else {
+                themeIcon.classList.remove('fa-moon');
+                themeIcon.classList.add('fa-sun'); // Tối thì hiện trời để bấm qua sáng
             }
-
-            // Show/Hide items
-            for (let item of items) {
-                if (category === 'all') {
-                    item.style.display = 'inline-block';
-                } else {
-                    if (item.classList.contains(category)) {
-                        item.style.display = 'inline-block';
-                    } else {
-                        item.style.display = 'none';
-                    }
-                }
-            }
+            initStars();
         }
 
-        // --- 4. PIXEL SPACE BACKGROUND (Giữ nguyên logic cũ của bạn) ---
+        // --- 2. LOGIC SLIDESHOW VỀ TÔI ---
+        const slides = document.querySelectorAll('#about-slideshow img');
+        let currentSlide = 0;
+
+        function nextSlide() {
+            // Xóa class active của ảnh hiện tại
+            slides[currentSlide].classList.remove('active');
+            // Tăng biến đếm, nếu hết thì quay về 0
+            currentSlide = (currentSlide + 1) % slides.length;
+            // Thêm active cho ảnh tiếp theo
+            slides[currentSlide].classList.add('active');
+        }
+        
+        // Chạy hàm nextSlide mỗi 3000ms (3 giây)
+        setInterval(nextSlide, 3000);
+
+
+        // --- SCRIPT CANVAS (NỀN VŨ TRỤ) ---
         const canvas = document.getElementById('pixel-space-bg');
         const ctx = canvas.getContext('2d');
+
         let width, height;
-        let stars = [];
-        
+        let stars = []; 
+        let shootingStars = []; 
+
+        const darkColors = ['#ff3333', '#ad0000', '#ff8c00', '#ffb3b3', '#660000', '#cc4400'];
+        const lightColors = ['#333333', '#666666', '#da0b0b', '#000000', '#aaaaaa'];
+
         function resize() {
             width = window.innerWidth;
             height = window.innerHeight;
@@ -490,43 +501,165 @@
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2;
-                this.speed = Math.random() * 0.5;
-                this.color = isLightMode ? '#333' : '#fff'; // Simple check
+                this.size = Math.floor(Math.random() * 4) + 2; 
+                this.speedX = Math.random() * 0.5 - 0.25; 
+                this.speedY = Math.random() * 0.2 + 0.1;
+                
+                const currentColors = isLightMode ? lightColors : darkColors;
+                this.color = currentColors[Math.floor(Math.random() * currentColors.length)];
+                
+                this.alpha = Math.random();
+                this.alphaChange = (Math.random() * 0.02) - 0.01;
             }
+
             update() {
-                this.y -= this.speed;
-                if (this.y < 0) this.y = height;
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.alpha += this.alphaChange;
+                if (this.alpha <= 0.2 || this.alpha >= 1) this.alphaChange = -this.alphaChange;
+                if (this.y > height) this.y = -this.size;
+                if (this.x > width) this.x = 0;
+                if (this.x < 0) this.x = width;
             }
+
             draw() {
+                ctx.globalAlpha = this.alpha;
                 ctx.fillStyle = this.color;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
+                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
+                ctx.globalAlpha = 1;
+            }
+        }
+
+        class ShootingStar {
+            constructor() {
+                this.x = Math.random() < 0.5 ? Math.random() * width : width;
+                this.y = Math.random() < 0.5 ? 0 : Math.random() * height / 2;
+                this.speedX = -(Math.random() * 10 + 15); 
+                this.speedY = (Math.random() * 5 + 10);   
+                this.size = Math.floor(Math.random() * 3) + 3; 
+                
+                this.color = isLightMode ? '#333333' : '#ffffff'; 
+                this.tailColor = isLightMode ? '#da0b0b' : '#ffaa00'; 
+                
+                this.life = 100; 
+                this.history = []; 
+            }
+
+            update() {
+                this.history.push({x: this.x, y: this.y});
+                if(this.history.length > 10) this.history.shift(); 
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+            }
+
+            draw() {
+                for (let i = 0; i < this.history.length; i++) {
+                    let pos = this.history[i];
+                    let opacity = i / this.history.length; 
+                    ctx.fillStyle = this.tailColor;
+                    ctx.globalAlpha = opacity;
+                    ctx.fillRect(Math.floor(pos.x), Math.floor(pos.y), this.size, this.size);
+                }
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = 1;
+                ctx.fillRect(Math.floor(this.x), Math.floor(this.y), this.size, this.size);
             }
         }
 
         function initStars() {
             stars = [];
-            for(let i=0; i<100; i++) stars.push(new Star());
+            let numStars = Math.floor((width * height) / 4000); 
+            for (let i = 0; i < numStars; i++) {
+                stars.push(new Star());
+            }
         }
 
         function animate() {
             ctx.clearRect(0, 0, width, height);
-            // Cập nhật màu sao dựa trên theme hiện tại
-            let currentColor = document.body.classList.contains('light-mode') ? '#333' : '#fff';
+            
+            ctx.fillStyle = isLightMode ? '#fdfbf7' : '#0a000f';
+            ctx.fillRect(0, 0, width, height);
             
             stars.forEach(star => {
-                star.color = currentColor;
                 star.update();
                 star.draw();
             });
+
+            for (let i = 0; i < shootingStars.length; i++) {
+                shootingStars[i].update();
+                shootingStars[i].draw();
+                if (shootingStars[i].life <= 0 || shootingStars[i].x < -50 || shootingStars[i].y > height + 50) {
+                    shootingStars.splice(i, 1);
+                    i--;
+                }
+            }
+            
             requestAnimationFrame(animate);
         }
+
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if(Math.random() < 0.3) {
+                shootingStars.push(new ShootingStar());
+            }
+        });
 
         window.addEventListener('resize', resize);
         resize();
         animate();
+
+
+        // --- LOGIC MENU & PORTFOLIO CŨ ---
+        function toggleMenu() {
+            var nav = document.getElementById('nav-list');
+            nav.classList.toggle('active');
+        }
+
+        const portfolioData = {
+            'brand': [
+                { title: 'Brand 01', img: 'ảnh/1.jpg' }, { title: 'Brand 02', img: 'ảnh/2.jpg' }, { title: 'Brand 03', img: 'ảnh/3.jpg' },
+                { title: 'Brand 04', img: 'ảnh/4.jpg' }, { title: 'Brand 05', img: 'ảnh/5.jpg' }, { title: 'Brand 06', img: 'ảnh/6.jpg' },
+                { title: 'Brand 07', img: 'ảnh/7.jpg' }, { title: 'Brand 08', img: 'ảnh/8.jpg' }, { title: 'Brand 09', img: 'ảnh/9.jpg' },
+            ],
+            'packaging': [
+                { title: 'Packaging 01', img: 'ảnh/1.jpg' }, { title: 'Packaging 02', img: 'ảnh/2.jpg' }, { title: 'Packaging 03', img: 'ảnh/3.jpg' },
+                { title: 'Packaging 04', img: 'ảnh/4.jpg' }, { title: 'Packaging 05', img: 'ảnh/5.jpg' }, { title: 'Packaging 06', img: 'ảnh/6.jpg' },
+                { title: 'Packaging 07', img: 'ảnh/7.jpg' }, { title: 'Packaging 08', img: 'ảnh/8.jpg' }, { title: 'Packaging 09', img: 'ảnh/9.jpg' },
+            ],
+            'logo': [
+                { title: 'Logo 01', img: 'ảnh/1.jpg' }, { title: 'Logo 02', img: 'ảnh/2.jpg' }, { title: 'Logo 03', img: 'ảnh/3.jpg' },
+                { title: 'Logo 04', img: 'ảnh/4.jpg' }, { title: 'Logo 05', img: 'ảnh/5.jpg' }, { title: 'Logo 06', img: 'ảnh/6.jpg' },
+                { title: 'Logo 07', img: 'ảnh/7.jpg' }, { title: 'Logo 08', img: 'ảnh/8.jpg' }, { title: 'Logo 09', img: 'ảnh/9.jpg' },
+            ],
+            'mockup': [
+                { title: 'Mockup 01', img: 'ảnh/1.jpg' }, { title: 'Mockup 02', img: 'ảnh/2.jpg' }, { title: 'Mockup 03', img: 'ảnh/3.jpg' },
+                { title: 'Mockup 04', img: 'ảnh/4.jpg' }, { title: 'Mockup 05', img: 'ảnh/5.jpg' }, { title: 'Mockup 06', img: 'ảnh/6.jpg' },
+                { title: 'Mockup 07', img: 'ảnh/7.jpg' }, { title: 'Mockup 08', img: 'ảnh/8.jpg' }, { title: 'Mockup 09', img: 'ảnh/9.jpg' },
+            ]
+        };
+
+        function openCategory(catName) {
+            document.getElementById('category-container').style.display = 'none';
+            const galleryView = document.getElementById('gallery-view');
+            galleryView.style.display = 'block';
+            const titles = { 'brand': 'Brand Identity', 'packaging': 'Packaging Design', 'logo': 'Logo Design', 'mockup': 'Mockup Collection' };
+            document.getElementById('gallery-title').innerText = titles[catName];
+            const grid = document.getElementById('portfolio-grid');
+            grid.innerHTML = '';
+            const items = portfolioData[catName];
+            items.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'portfolio-item';
+                div.innerHTML = `<img src="${item.img}" alt="${item.title}"><div class="overlay"><h4>${item.title}</h4></div>`;
+                grid.appendChild(div);
+            });
+        }
+
+        function closeCategory() {
+            document.getElementById('gallery-view').style.display = 'none';
+            document.getElementById('category-container').style.display = 'grid';
+        }
     </script>
 </body>
 </html>
